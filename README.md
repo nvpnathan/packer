@@ -1,0 +1,1 @@
+# Packer templates for vSphere
