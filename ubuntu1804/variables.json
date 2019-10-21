@@ -1,0 +1,15 @@
+{
+    "vcenter_server":"vlab-vcsa.vballin.com",
+    "username":"administrator@vsphere.local",
+    "password":"VMware1!",
+    "datastore":"vlab-nfs-ds-01",
+    "folder": "packer-templates",
+    "host":"vlab-esx-150.vballin.com",
+    "cluster": "vlab-mgmt-edge",
+    "network": "vlab-mgmt",
+    "ssh_username": "nathan",
+    "ssh_password": "VMware1!",
+    "ssh_key_src_pub": "id_rsa.pub",
+    "image_home_dir": "/home/nathan"
+}
+
