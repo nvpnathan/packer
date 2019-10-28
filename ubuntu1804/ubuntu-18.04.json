@@ -8,7 +8,7 @@
         "password":            "{{user `password`}}",
         "insecure_connection": "true",
   
-        "vm_name": "packer-ubuntu-1804-{{isotime \"2006-01-02\"}}{{timestamp}}",
+        "vm_name": "packer-ubuntu-1804-{{isotime \"2006-01-02\"}}T{{timestamp}}",
         "datastore": "{{user `datastore`}}",
         "folder": "{{user `folder`}}",
         "host":     "{{user `host`}}",
@@ -82,7 +82,7 @@
       {
         "type": "shell",
         "inline": [
-          "mkdir -p {{user `image_home_dir`}}/.ssh"
+          "mkdir -p {{user `image_home_dir`}}{{user `ssh_username`}}/.ssh"
         ]
       },
       {

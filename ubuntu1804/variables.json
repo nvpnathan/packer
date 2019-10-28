@@ -10,6 +10,6 @@
     "ssh_username": "nathan",
     "ssh_password": "VMware1!",
     "ssh_key_src_pub": "id_rsa.pub",
-    "image_home_dir": "/home/nathan"
+    "image_home_dir": "/home/"
 }
 

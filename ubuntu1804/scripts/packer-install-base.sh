@@ -1,8 +1,8 @@
 #!/bin/bash
 
 apt-get clean
-apt-get update
-apt-get upgrade -y
+apt -y update
+apt -y upgrade
 
 # Update to the latest kernel
 apt-get install -y linux-generic linux-image-generic linux-server
@@ -13,7 +13,7 @@ sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="quiet"/GRUB_CMDLINE_LINUX_DEFAULT=""/' /et
 update-grub
 
 # Install base packages
-apt-get install -y wget -q  unzip git curl net-tools tar gawk tcpdump netcat sshpass jq
+apt-get install -y wget -q  unzip git curl net-tools tar gawk tcpdump netcat sshpass jq vim
 
 # Reboot with the new kernel
 shutdown -r now
