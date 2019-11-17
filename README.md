@@ -8,3 +8,8 @@
   *   https://github.com/jetbrains-infra/packer-builder-vsphere
 
 
+`packer validate ubuntu.json -var-file variables.json`
+
+`packer build ubuntu.json -var-file variables.json`
+
+
