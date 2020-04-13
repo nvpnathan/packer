@@ -1,15 +1,11 @@
 # Packer templates for vSphere
 
 
-* packer version 1.3.5
-    *  https://releases.hashicorp.com/packer/1.3.5/packer_1.3.5_darwin_amd64.zip
+* packer version 1.5.5
+  `brew install packer`
 
-* packer-builder-vsphere 2.3
-  *   https://github.com/jetbrains-infra/packer-builder-vsphere
+`packer validate -var-file variables.json ubuntu.json`
 
-
-`packer validate ubuntu.json -var-file variables.json`
-
-`packer build ubuntu.json -var-file variables.json`
+`packer build -var-file variables.json ubuntu.json`
 
 

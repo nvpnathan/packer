@@ -4,12 +4,12 @@
     "password":"VMware1!",
     "datastore":"vlab-nfs-ds-01",
     "folder": "packer-templates",
-    "host":"vlab-esx-150.vballin.com",
-    "cluster": "vlab-mgmt-edge",
-    "network": "vlab-mgmt",
+    "host":"vlab-esx-100.vballin.com",
+    "cluster": "tf-vlab-mgmt",
+    "network": "tf-vlab-mgmt",
     "ssh_username": "nathan",
     "ssh_password": "VMware1!",
-    "ssh_key_src_pub": "id_rsa.pub",
+    "ssh_key_src_pub": "/Users/nness/.ssh/id_rsa.pub",
     "image_home_dir": "/home/"
 }
 
