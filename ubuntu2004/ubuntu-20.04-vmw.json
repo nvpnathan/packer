@@ -1,0 +1,116 @@
+{
+    "builders": [
+      {
+        "type": "vsphere-iso",
+  
+        "vcenter_server":      "{{user `vcenter_server`}}",
+        "username":            "{{user `username`}}",
+        "password":            "{{user `password`}}",
+        "insecure_connection": "true",
+        "datacenter": "{{user `datacenter`}}",
+        "vm_name": "packer-ubuntu-2004-{{isotime \"2006-01-02\"}}T{{timestamp}}",
+        "datastore": "{{user `datastore`}}",
+        "folder": "{{user `folder`}}",
+        "host":     "{{user `host`}}",
+        "convert_to_template": "true",
+        "network": "{{user `network`}}",
+        "boot_order": "disk,cdrom",
+  
+        "guest_os_type": "ubuntu64Guest",
+  
+        "ssh_username": "{{user `ssh_username`}}",
+        "ssh_password": "{{user `ssh_password`}}",
+  
+        "CPUs":             2,
+        "RAM":              2048,
+        "RAM_reserve_all": true,
+  
+        "disk_controller_type":  "pvscsi",
+        "disk_size":        32768,
+        "disk_thin_provisioned": true,
+  
+        "network_card": "vmxnet3",
+        "http_directory": "http",
+        "iso_urls": "http://cdimage.ubuntu.com/ubuntu-legacy-server/releases/20.04/release/ubuntu-20.04-legacy-server-amd64.iso",
+        "iso_checksum": "36f15879bd9dfd061cd588620a164a82972663fdd148cce1f70d57d314c21b73",
+        "iso_checksum_type": "sha256",
+
+
+        "floppy_files": [
+          "./preseed.cfg"
+        ],
+        "boot_command": [
+          "<enter><wait><f6><wait><esc><wait>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs>",
+          "/install/vmlinuz",
+          " initrd=/install/initrd.gz",
+          " priority=critical",
+          " locale=en_US",
+          " file=/media/preseed.cfg",
+          " netcfg/disable_dhcp=true",
+          " netcfg/disable_autoconfig=true",
+          " netcfg/confirm_static=true",
+          " netcfg/get_ipaddress={{user `net_ip`}}",
+          " netcfg/get_netmask={{user `net_mask`}}",
+          " netcfg/get_gateway={{user `net_gw`}}",
+          " netcfg/get_nameservers={{user `net_dns`}}",
+          " clock-setup/ntp-server={{user `ntp_ip`}}",
+          " netcfg/get_domain string {{user `site`}}.eng.vmware.com",
+          "<enter>"
+        ]
+      }
+    ],
+  
+    "provisioners": [
+      {
+        "type": "shell",
+        "inline": ["echo 'template build - starting configuration by deploying base packages/applications'"]
+      },
+      {
+        "execute_command": "echo '{{user `password`}}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+        "scripts": [
+          "scripts/packer-install-base.sh",
+          "scripts/packer-image-cleanup.sh"
+        ],
+        "type": "shell",
+        "expect_disconnect": true,
+        "pause_before": "10s"
+      },
+      {
+        "type": "shell",
+        "inline": ["echo 'template build - start configuring ssh access'"]
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "mkdir -p {{user `image_home_dir`}}{{user `ssh_username`}}/.ssh"
+        ]
+      },
+      {
+        "type": "file",
+        "source": "{{user `ssh_key_src_pub`}}",
+        "destination": "{{user `image_home_dir`}}{{user `ssh_username`}}/.ssh/authorized_keys"
+      },
+      {
+        "type": "shell",
+        "inline": [
+          "sudo chown -R {{user `ssh_username`}}:{{user `ssh_username`}} {{user `image_home_dir`}}{{user `ssh_username`}}",
+          "sudo chmod go-w {{user `image_home_dir`}}{{user `ssh_username`}}/",
+          "sudo chmod 700 {{user `image_home_dir`}}{{user `ssh_username`}}/.ssh",
+          "sudo chmod 600 {{user `image_home_dir`}}{{user `ssh_username`}}/.ssh/authorized_keys"
+          ]
+      },
+      {
+        "type": "shell",
+        "inline": ["echo 'template build - complete'"]
+      }
+    ]
+  }
